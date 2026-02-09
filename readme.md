@@ -1,50 +1,90 @@
-AI Cloud Log Analyzer
+**AI Cloud Log Analyzer**
+A backend service that analyzes Linux system logs and returns structured, human-readable insights. The application is built using FastAPI, designed for AI-powered analysis, containerized with Docker, and deployable on AWS EC2.
 
-A backend service that analyzes Linux system logs and generates human-readable insights using AI. Built with FastAPI, containerized using Docker, and deployed on AWS EC2.
+**Overview**
 
-What It Does
+This project demonstrates how to design and deploy a cloud-ready backend system that processes real Linux system logs and produces analytical insights through an AI layer. The system architecture cleanly separates log ingestion, analysis, and API delivery.
+For demonstration purposes, the AI analysis layer currently runs in mock mode. The application is fully designed to integrate with OpenAI APIs in production without changes to the API contract.
 
-Reads Linux system logs
+**Key Features**
 
-Summarizes log activity using OpenAI APIs
+1. Reads real Linux system logs (/var/log/syslog)
 
-Identifies severity and possible causes
+2. REST API built with FastAPI
 
-Exposes REST APIs with FastAPI
+3. Health check endpoint for service monitoring
 
-Runs as a Docker container on AWS EC2
+4. Structured analysis output (summary, severity, causes)
 
-Tech Stack
+5. Clean separation between log ingestion and analysis layers
 
-Python, FastAPI, Linux (Ubuntu), Docker, AWS EC2, OpenAI API, REST APIs
+6. Docker-ready and cloud-deployable architecture
 
-API Endpoints
+7. Secure handling of configuration via environment variables
 
-GET /health — Service health check
+**Tech Stack**
+Language: Python
+Framework: FastAPI
+Operating System: Linux (Ubuntu)
+Containerization: Docker
+Cloud Platform: AWS EC2
+API Style: REST
+Tools: Git, Bash, SSH
 
-POST /logs/analyze?lines=50 — Analyze recent log entries
+**API Endpoints
+**
+Health Check
+GET /health
 
-Run Locally
+
+Response:
+
+{ "status": "ok" }
+
+Log Analysis
+POST /logs/analyze?lines=50
+
+
+Response (example):
+
+{
+  "lines_read": 50,
+  "analysis": {
+    "summary": "System logs indicate repeated AppArmor denials and kernel warnings.",
+    "severity": "medium",
+    "possible_causes": [
+      "Restricted permissions for snap-based applications",
+      "Access attempts to protected kernel files"
+    ],
+    "recommendation": "Review AppArmor profiles and verify expected behavior."
+  }
+}
+
+Running Locally
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 
 
-Open: http://127.0.0.1:8000/docs
+Access:
 
-Run with Docker
+http://127.0.0.1:8000/docs
+
+Docker Usage
 docker build -t log-analyzer .
 docker run -p 8000:8000 log-analyzer
 
-Cloud Deployment
 
-Deployed on AWS EC2 (Ubuntu Free Tier) using Docker and accessed via public IP.
+**AI Integration Note
 
-Security
+The analysis layer is mocked for demonstration purposes due to API credit limitations.
+In production, this layer is designed to call OpenAI APIs without requiring changes to routes, data flow, or response format.**
 
-API keys managed via environment variables
+**What This Project Demonstrates
+**
 
-.env is excluded from version control
-
-Purpose
-
-Built as a portfolio project to demonstrate backend development, cloud deployment, Dockerization, and practical AI integration.
+Backend API development using FastAPI
+Linux system-level log processing
+Clean service-layer abstraction
+Docker-based application packaging
+Cloud-ready backend architecture
+Professional handling of external dependencies
